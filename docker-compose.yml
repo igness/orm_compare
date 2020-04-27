@@ -1,0 +1,20 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+    command: sh -c "sleep 1 && go run ./cmd/gorm"
+    environment:
+      - DSN=root@tcp(mysql:3306)/orm_test?parseTime=true
+  mysql:
+    image: mysql:8.0
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_DATABASE=orm_test
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+    volumes:
+      - mysql_data:/var/lib/mysql
+volumes:
+  mysql_data:
